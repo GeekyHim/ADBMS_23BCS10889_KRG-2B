@@ -1,0 +1,70 @@
+-------------EXPERIMENT-3 (MEDIUM LEVEL)-----------
+
+CREATE TABLE DEPARTMENT (
+    id INT PRIMARY KEY,
+    dept_name VARCHAR(50)
+);
+
+CREATE TABLE EMPLOYEES (
+    id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    salary INT,
+    department_id INT,
+    FOREIGN KEY (department_id) REFERENCES department(id)
+);
+
+INSERT INTO DEPARTMENT (id, dept_name) VALUES
+(1, 'IT'),
+(2, 'SALES');
+
+INSERT INTO EMPLOYEES (id, emp_name, salary, department_id) VALUES
+(1, 'JOE', 70000, 1),
+(2, 'JIM', 90000, 1),
+(3, 'HENRY', 80000, 2),
+(4, 'SAM', 60000, 2),
+(5, 'MAX', 90000, 1);
+
+select * from employee;
+select * from department;
+
+
+SELECT D.dept_name AS [DEPT_NAME],E.EMP_NAME,E.SALARY
+FROM EMPLOYEES AS E
+INNER JOIN
+DEPARTMENT AS D
+ON D.ID=E.department_id
+WHERE E.SALARY IN
+(
+SELECT MAX(SALARY) FROM EMPLOYEES AS E2 WHERE E2.department_id=E.department_id
+);
+
+
+----------------EXPERIMENT-3(HARD LEVEL)-------------------
+CREATE TABLE A (
+EMPID INT, ENAME VARCHAR(50),SALARY INT
+);
+
+CREATE TABLE B(
+EMPID INT, ENAME VARCHAR(50),SALARY INT
+);
+
+INSERT INTO A(EMPID,ENAME,SALARY) VALUES
+(1,'AA',1000),
+(2,'BB',300);
+
+INSERT INTO B(EMPID,ENAME,SALARY) VALUES
+(2,'BB',600),
+(3,'CC',100);
+
+SELECT * FROM A;
+SELECT * FROM B;
+
+SELECT EMPID,ENAME AS ENAME ,MIN(SALARY) AS SALARY
+FROM
+(
+SELECT *FROM A
+UNION ALL
+SELECT *FROM B
+) 
+AS INTERMEDIATE_RESULT
+GROUP BY EMPID,ENAME;
